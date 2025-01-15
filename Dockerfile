@@ -9,7 +9,7 @@ ADD . .
 # Build the process-exporter command inside the container.
 RUN CGO_ENABLED=0 GOARCH=$TARGETARCH make build
 
-FROM scratch
+FROM --platform=linux/amd64 busybox
 
 COPY --from=build /go/src/github.com/ncabatoff/process-exporter/process-exporter /bin/process-exporter
 

@@ -2,7 +2,7 @@ pkgs          = $(shell go list ./...)
 
 PREFIX                  ?= $(shell pwd)
 BIN_DIR                 ?= $(shell pwd)
-DOCKER_IMAGE_NAME       ?= ncabatoff/process-exporter
+DOCKER_IMAGE_NAME       ?= sq325/process-exporter
 
 BRANCH      ?= $(shell git rev-parse --abbrev-ref HEAD)
 BUILDDATE   ?= $(shell date --iso-8601=seconds)
@@ -54,6 +54,9 @@ integ:
 install:
 	@echo ">> installing binary"
 	cd cmd/process-exporter; CGO_ENABLED=0 go install -a -tags netgo
+
+dockerbuild:
+	docker build --platform linux/amd64 --build-arg TARGETARCH=amd64 -t "$(DOCKER_IMAGE_NAME):$(TAG_VERSION)" .
 
 docker:
 	@echo ">> building docker image"
